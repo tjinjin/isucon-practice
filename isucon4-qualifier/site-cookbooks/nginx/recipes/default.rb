@@ -14,3 +14,28 @@ service 'nginx' do
   action [:enable, :start]
   supports reload: true
 end
+
+directory '/home/isucon/webapp/ruby/tmp/' do
+  owner 'isucon'
+  group 'isucon'
+  mode '0755'
+end
+
+directory '/home/isucon/webapp/ruby/tmp/sockets' do
+  owner 'isucon'
+  group 'isucon'
+  mode '0755'
+end
+
+cookbook_file '/home/isucon/webapp/ruby/Procfile' do
+  notifies :restart, 'service[supervisord]'
+end
+
+cookbook_file '/home/isucon/webapp/ruby/unicorn_config.rb' do
+  notifies :restart, 'service[supervisord]'
+end
+
+service 'supervisord' do
+  action [:enable, :start]
+  supports restart: true
+end
