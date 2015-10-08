@@ -6,6 +6,10 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+apt_package 'unattended-upgrades' do
+  action :purge
+end
+
 package 'language-pack-ja-base'
 package 'language-pack-ja'
 
