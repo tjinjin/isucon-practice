@@ -6,3 +6,5 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe 'refactor::nginx'
+include_recipe 'refactor::mysql'
