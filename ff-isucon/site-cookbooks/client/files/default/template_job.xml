@@ -1,0 +1,33 @@
+<joblist>
+  <job>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>cd isucon5-benchmarker &amp;&amp; perl5.22.0 bench.pl @IP_ADDRESS@</exec>
+      </command>
+    </sequence>
+    <notification>
+      <onsuccess>
+        <plugin type='SlackNotification'>
+          <configuration>
+            <entry key='webhook_url' value='https://hooks.slack.com/services/hogehoge' />
+          </configuration>
+        </plugin>
+      </onsuccess>
+      <onfailure>
+        <plugin type='SlackNotification'>
+          <configuration>
+            <entry key='webhook_url' value='https://hooks.slack.com/services/hogehoge' />
+          </configuration>
+        </plugin>
+      </onfailure>
+   </notification>
+    <loglevel>INFO</loglevel>
+    <name>@HOST_NAME@</name>
+    <context>
+      <project>ff-isucon</project>
+    </context>
+    <description></description>
+    <id>@HOST_NAME@</id>
+    <uuid>@HOST_NAME@</uuid>
+  </job>
+</joblist>
