@@ -9,14 +9,14 @@
       <onsuccess>
         <plugin type='SlackNotification'>
           <configuration>
-            <entry key='webhook_url' value='https://hooks.slack.com/services/hogehoge' />
+            <entry key='webhook_url' value='<%= @webhook_url %>' />
           </configuration>
         </plugin>
       </onsuccess>
       <onfailure>
         <plugin type='SlackNotification'>
           <configuration>
-            <entry key='webhook_url' value='https://hooks.slack.com/services/hogehoge' />
+            <entry key='webhook_url' value='<%= @webhook_url %>' />
           </configuration>
         </plugin>
       </onfailure>
