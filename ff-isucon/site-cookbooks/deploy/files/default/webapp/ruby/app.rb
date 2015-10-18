@@ -4,6 +4,7 @@ require 'mysql2-cs-bind'
 require 'tilt/erubis'
 require 'erubis'
 require 'rack-lineprof'
+require 'logger'
 
 module Isucon5
   class AuthenticationError < StandardError; end
@@ -25,6 +26,8 @@ class Isucon5::WebApp < Sinatra::Base
   #set :sessions, true
   set :session_secret, ENV['ISUCON5_SESSION_SECRET'] || 'beermoris'
   set :protection, true
+
+  logger = Logger.new('sinatra.log')
 
   helpers do
     def config
@@ -181,13 +184,20 @@ ORDER BY c.created_at DESC
 LIMIT 10
 SQL
     comments_for_me = db.xquery(comments_for_me_query, current_user[:id])
-
+# N+1
+# 先に友達リストを取得する
+    logger.info 'friends'
+    friends_ids = []
+    db.xquery('SELECT another from relations where one = ?', current_user[:id]).each do |friends|
+      friends_ids <<  friends[:another]
+    end
+    logger.info friends_ids
     entries_of_friends = []
-    db.query('SELECT * FROM entries ORDER BY created_at DESC LIMIT 1000').each do |entry|
-      next unless is_friend?(entry[:user_id])
-      entry[:title] = entry[:body].split(/\n/).first
+    db.xquery('SELECT * FROM entries where user_id in (?) ORDER BY created_at DESC limit 10', friends_ids).each do |entry|
+#      next unless is_friend?(entry[:user_id])
+#      entry[:title] = entry[:body].split(/\n/).first
       entries_of_friends << entry
-      break if entries_of_friends.size >= 10
+#      break if entries_of_friends.size >= 10
     end
 
     comments_of_friends = []
