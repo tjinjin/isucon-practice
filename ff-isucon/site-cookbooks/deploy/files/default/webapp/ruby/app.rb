@@ -3,6 +3,7 @@ require 'mysql2'
 require 'mysql2-cs-bind'
 require 'tilt/erubis'
 require 'erubis'
+require 'rack-lineprof'
 
 module Isucon5
   class AuthenticationError < StandardError; end
@@ -18,6 +19,7 @@ end
 
 class Isucon5::WebApp < Sinatra::Base
   use Rack::Session::Cookie
+  use Rack::Lineprof
   set :erb, escape_html: true
   set :public_folder, File.expand_path('../../static', __FILE__)
   #set :sessions, true
