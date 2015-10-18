@@ -1,4 +1,4 @@
-cookbook_file '/etc/mysql/my.cnf' do
+cookbook_file '/etc/mysql/mysql.cnf' do
   notifies :restart, 'service[mysql]'
 end
 
