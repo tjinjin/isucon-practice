@@ -15,5 +15,6 @@ export GOROOT=/home/isucon/.local/go
 export GOPATH=/home/isucon/webapp/go
 export PATH=/home/isucon/.local/scala/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH=$GOPATH/bin:$PATH
 HISTSIZE=50000
 HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
