@@ -8,3 +8,4 @@
 #
 include_recipe 'refactor::nginx'
 include_recipe 'refactor::mysql'
+include_recipe 'refactor::redis'
