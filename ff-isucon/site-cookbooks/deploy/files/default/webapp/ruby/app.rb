@@ -4,7 +4,7 @@ require 'mysql2-cs-bind'
 require 'tilt/erubis'
 require 'erubis'
 require 'rack-lineprof'
-require 'logger'
+require 'pry'
 
 module Isucon5
   class AuthenticationError < StandardError; end
@@ -221,6 +221,8 @@ SQL
       comments_of_friends << comment
 #      break if comments_of_friends.size >= 10
     end
+
+    binding.pry
 
     friends_query = 'SELECT * FROM relations WHERE one = ? OR another = ? ORDER BY created_at DESC'
     friends_map = {}
