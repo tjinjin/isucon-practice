@@ -212,8 +212,7 @@ and (e.private = 0 or e.private = 1 and (e.user_id = ? or e.user_id in (?)))
 ORDER BY c.id DESC LIMIT 10
 SQL
 
-    aaa = db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).first
-    db.xquery(comments_query,friends_ids,current_user[:id],friends_ids) do |comment|
+    db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).each do |comment|
 
 
 #    db.xquery('SELECT c.id as id, c.entry_id as entry_id, c.user_id as user_id, c.comment as comment, c.created_at as created_at FROM comments c JOIN entries e ON c.entry_id = e.id WHERE c.user_id IN (?) and (e.private = 0 or e.private)ORDER BY c.created_at DESC LIMIT 10', friends_ids).each do |comment|
@@ -223,8 +222,6 @@ SQL
       comments_of_friends << comment
 #      break if comments_of_friends.size >= 10
     end
-
-    binding.pry
 
     friends_query = 'SELECT * FROM relations WHERE one = ? OR another = ? ORDER BY created_at DESC'
     friends_map = {}
