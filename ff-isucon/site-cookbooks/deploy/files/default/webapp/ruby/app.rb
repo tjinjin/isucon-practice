@@ -5,6 +5,7 @@ require 'tilt/erubis'
 require 'erubis'
 require 'rack-lineprof'
 require 'pry'
+require 'pry-byebug'
 
 module Isucon5
   class AuthenticationError < StandardError; end
@@ -211,6 +212,7 @@ and (e.private = 0 or e.private = 1 and (e.user_id = ? or e.user_id in (?)))
 ORDER BY c.id DESC LIMIT 10
 SQL
 
+    aaa = db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).first
     db.xquery(comments_query,friends_ids,current_user[:id],friends_ids) do |comment|
 
 
