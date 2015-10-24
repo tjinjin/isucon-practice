@@ -241,11 +241,11 @@ SQL
     friends = friends_map.map{|user_id, created_at| [user_id, created_at]}
 
     query = <<SQL
-SELECT user_id, owner_id, DATE(created_at) AS date, created_at AS updated
+SELECT user_id, owner_id, created_at AS date, created_at AS updated
 FROM footprints
 WHERE user_id = ?
-GROUP BY user_id, owner_id, DATE(created_at)
-ORDER BY updated DESC
+GROUP BY user_id, owner_id, created_at
+ORDER BY created_at DESC
 LIMIT 10
 SQL
     footprints = db.xquery(query, current_user[:id])
