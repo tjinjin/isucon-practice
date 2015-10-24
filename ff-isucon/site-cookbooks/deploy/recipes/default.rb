@@ -34,3 +34,8 @@ cookbook_file "#{web_home}/unicorn_config.rb" do
   source "#{home_dir}/unicorn_config.rb"
   notifies :restart, 'service[isuxi.ruby]'
 end
+
+cookbook_file "#{web_home}/views/index.erb" do
+  source "#{home_dir}/views/index.erb"
+  notifies :restart, 'service[isuxi.ruby]'
+end
