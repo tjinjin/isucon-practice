@@ -101,13 +101,13 @@ SQL
     end
 
     def get_user(user_id)
-      user = db.xquery('SELECT * FROM users WHERE id = ?', user_id).first
+      user = db.xquery('SELECT id,account_name,nick_name,email FROM users WHERE id = ?', user_id).first
       raise Isucon5::ContentNotFound unless user
       user
     end
 
     def user_from_account(account_name)
-      user = db.xquery('SELECT * FROM users WHERE account_name = ?', account_name).first
+      user = db.xquery('SELECT id,account_name,nick_name,email FROM users WHERE account_name = ?', account_name).first
       raise Isucon5::ContentNotFound unless user
       user
     end
@@ -178,9 +178,9 @@ SQL
   get '/' do
     authenticated!
 
-    profile = db.xquery('SELECT * FROM profiles WHERE user_id = ?', current_user[:id]).first
+    profile = db.xquery('SELECT user_id, first_name, last_name, sex, birthday,pref,updated_at  FROM profiles WHERE user_id = ?', current_user[:id]).first
 
-    entries_query = 'SELECT * FROM entries WHERE user_id = ? ORDER BY created_at LIMIT 5'
+    entries_query = 'SELECT id, user_id, private, body, created_at FROM entries WHERE user_id = ? ORDER BY created_at LIMIT 5'
     entries = db.xquery(entries_query, current_user[:id])
       .map{ |entry| entry[:is_private] = (entry[:private] == 1); entry[:title], entry[:content] = entry[:body].split(/\n/, 2); entry }
 
