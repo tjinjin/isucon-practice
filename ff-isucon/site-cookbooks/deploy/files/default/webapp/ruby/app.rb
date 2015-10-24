@@ -85,7 +85,8 @@ SQL
       unless session[:user_id]
         return nil
       end
-      @user = db.xquery('SELECT id, account_name, nick_name, email FROM users WHERE id=?', session[:user_id]).first
+      @user = db.xquery('SELECT id, account_name, nick_name, email FROM users WHERE id=? limit 1', session[:user_id])
+      #@user = db.xquery('SELECT id, account_name, nick_name, email FROM users WHERE id=?', session[:user_id]).first
       unless @user
         session[:user_id] = nil
         session.clear
