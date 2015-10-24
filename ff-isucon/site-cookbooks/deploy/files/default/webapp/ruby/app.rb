@@ -6,6 +6,9 @@ require 'erubis'
 require 'rack-lineprof'
 require 'pry'
 require 'pry-byebug'
+require 'redis'
+
+
 
 module Isucon5
   class AuthenticationError < StandardError; end
@@ -56,6 +59,10 @@ class Isucon5::WebApp < Sinatra::Base
       client.query_options.merge!(symbolize_keys: true)
       Thread.current[:isucon5_db] = client
       client
+    end
+
+    def redis
+      redis = Redis.new(host: "127.0.0.1", port: "6379")
     end
 
     def authenticate(email, password)
@@ -124,6 +131,7 @@ SQL
       if user_id != current_user[:id]
         query = 'INSERT INTO footprints (user_id,owner_id) VALUES (?,?)'
         db.xquery(query, user_id, current_user[:id])
+        redis.set(user_id, current_user[:id])
       end
     end
 
