@@ -45,8 +45,8 @@
     <% comments_for_me.each do |comment| %>
     <div class="comments-comment">
       <ul class="list-group">
-        <% comment_user = get_user(comment[:user_id]) %>
-        <li class="list-group-item comment-owner"><a href="/profile/<%= comment_user[:account_name] %>"><%= comment_user[:nick_name] %>さん</a>:
+        <% comment_user = users_info[comment[:user_id]] %>
+        <li class="list-group-item comment-owner"><a href="/profile/<%= comment_user[1] %>"><%= comment_user[2] %>さん</a>:
         <li class="list-group-item comment-comment"><%= comment[:comment].size > 30 ? comment[:comment][0...27] + '...' : comment[:comment] %>
         <li class="list-group-item comment-created-at">投稿時刻:<%= comment[:created_at] %>
       </ul>
@@ -61,8 +61,8 @@
     <% entries_of_friends.each do |entry| %>
     <div class="friend-entry">
       <ul class="list-group">
-        <% entry_owner = get_user(entry[:user_id]) %>
-        <li class="list-group-item entry-owner"><a href="/diary/entries/<%= entry_owner[:account_name] %>"><%= entry_owner[:nick_name] %>さん</a>:
+        <% entry_owner = users_info[entry[:user_id]] %>
+        <li class="list-group-item entry-owner"><a href="/diary/entries/<%= entry_owner[1] %>"><%= entry_owner[2] %>さん</a>:
         <li class="list-group-item entry-title"><a href="/diary/entry/<%= entry[:id] %>"><%= entry[:body].split(/\n/).first %></a>
         <li class="list-group-item entry-created-at">投稿時刻:<%= entry[:created_at] %>
       </ul>

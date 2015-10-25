@@ -178,6 +178,9 @@ SQL
   get '/' do
     authenticated!
 
+    # userのリスト ger_user対策
+    user_ids = []
+
     profile = db.xquery('SELECT user_id, first_name, last_name, sex, birthday,pref,updated_at  FROM profiles WHERE user_id = ?', current_user[:id]).first
 
     entries_query = 'SELECT id, user_id, private, body, created_at FROM entries WHERE user_id = ? ORDER BY created_at LIMIT 5'
@@ -193,6 +196,9 @@ ORDER BY c.created_at DESC
 LIMIT 10
 SQL
     comments_for_me = db.xquery(comments_for_me_query, current_user[:id])
+    comments_for_me.each do |a|
+      user_ids << a[:user_id]
+    end
 # N+1
 # 先に友達リストを取得する
     logger.info 'friends'
@@ -206,6 +212,7 @@ SQL
 #      next unless is_friend?(entry[:user_id])
 #      entry[:title] = entry[:body].split(/\n/).first
       entries_of_friends << entry
+      user_ids << entry[:user_id]
 #      break if entries_of_friends.size >= 10
     end
     # あなたの友だちのコメント
@@ -249,7 +256,6 @@ ORDER BY created_at DESC
 LIMIT 10
 SQL
     footprints = db.xquery(query, current_user[:id])
-    user_ids = []
     user_ids << current_user[:id]
     footprints.each do |footprint|
       user_ids << footprint[:owner_id]
@@ -257,7 +263,7 @@ SQL
 
     users_info = {}
 
-    db.xquery("SELECT id,account_name,nick_name,email FROM users WHERE id in (?)", user_ids).each do |user_id|
+    db.xquery("SELECT id,account_name,nick_name,email FROM users WHERE id in (?)", user_ids.sort).each do |user_id|
       tmp = [user_id[:id], user_id[:account_name], user_id[:nick_name], user_id[:email]]
       users_info.store(user_id[:id],tmp)
     end
