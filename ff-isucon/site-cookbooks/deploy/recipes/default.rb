@@ -39,3 +39,13 @@ cookbook_file "#{web_home}/views/index.erb" do
   source "#{home_dir}/views/index.erb"
   notifies :restart, 'service[isuxi.ruby]'
 end
+
+cookbook_file "#{web_home}/views/friends.erb" do
+  source "#{home_dir}/views/friends.erb"
+  notifies :restart, 'service[isuxi.ruby]'
+end
+
+cookbook_file "#{web_home}/views/footprints.erb" do
+  source "#{home_dir}/views/footprints.erb"
+  notifies :restart, 'service[isuxi.ruby]'
+end
