@@ -195,7 +195,9 @@ ORDER BY c.created_at DESC
 LIMIT 10
 SQL
     comments_for_me = db.xquery(comments_for_me_query, current_user[:id])
-
+    comments_for_me.each do |a|
+      user_ids << a[:user_id]
+    end
 # N+1
 # 先に友達リストを取得する
     friends_ids = []
