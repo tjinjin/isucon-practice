@@ -21,11 +21,11 @@
 !includedir /etc/mysql/mysql.conf.d/
 
 [mysqld]
-slow_query_log=ON
-slow_query_log_file=/var/log/mysql/mysql-slow.log
-long_query_time=0
+#slow_query_log=ON
+#slow_query_log_file=/var/log/mysql/mysql-slow.log
+#long_query_time=0
 
-innodb_buffer_pool_size = 1G
+innodb_buffer_pool_size = 1400M
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method=O_DIRECT
 
