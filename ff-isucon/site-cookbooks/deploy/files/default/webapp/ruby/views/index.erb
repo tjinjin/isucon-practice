@@ -78,7 +78,7 @@
     <div class="friend-comment">
       <ul class="list-group">
         <% comment_owner = get_user(comment[:user_id]) %>
-        <% entry = db.xquery('SELECT * FROM entries WHERE id=?', comment[:entry_id]).first %>
+        <% entry = db.xquery('SELECT user_id FROM entries WHERE id=?', comment[:entry_id]).first %>
         <% entry_owner = get_user(entry[:user_id]) %>
         <li class="list-group-item comment-from-to">
           <a href="/profile/<%= comment_owner[:account_name] %>"><%= comment_owner[:nick_name] %>さん</a>から

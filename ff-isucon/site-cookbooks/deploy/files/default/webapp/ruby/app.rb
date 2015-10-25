@@ -263,8 +263,8 @@ SQL
 
     users_info = {}
 
-    db.xquery("SELECT id,account_name,nick_name,email FROM users WHERE id in (?)", user_ids.sort).each do |user_id|
-      tmp = [user_id[:id], user_id[:account_name], user_id[:nick_name], user_id[:email]]
+    db.xquery("SELECT id,account_name,nick_name FROM users WHERE id in (?)", user_ids.sort).each do |user_id|
+      tmp = [user_id[:id], user_id[:account_name], user_id[:nick_name]]
       users_info.store(user_id[:id],tmp)
     end
 
