@@ -9,7 +9,6 @@ require 'erubis'
 #require 'redis'
 
 
-
 module Isucon5
   class AuthenticationError < StandardError; end
   class PermissionDenied < StandardError; end
@@ -217,7 +216,7 @@ SQL
     comments_of_friends = []
 #    db.xquery('SELECT * FROM comments where user_id in (?) ORDER BY created_at DESC LIMIT 1000', friends_ids).each do |comment|
     comments_query = <<SQL
-SELECT *
+SELECT c.user_id as user_id, c.entry_id as entry_id, c.comment as comment, c.created_at as created_at
 FROM comments c
 JOIN entries e ON c.entry_id = e.id
 WHERE c.user_id IN (?)
@@ -227,6 +226,8 @@ SQL
 
 #    db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).each do |comment|
     comments_of_friends = db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).to_a
+
+
 
 
 #    db.xquery('SELECT c.id as id, c.entry_id as entry_id, c.user_id as user_id, c.comment as comment, c.created_at as created_at FROM comments c JOIN entries e ON c.entry_id = e.id WHERE c.user_id IN (?) and (e.private = 0 or e.private)ORDER BY c.created_at DESC LIMIT 10', friends_ids).each do |comment|
