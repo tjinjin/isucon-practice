@@ -101,9 +101,9 @@ SQL
     end
 
     def get_user(user_id)
-      user = db.xquery('SELECT id,account_name,nick_name,email FROM users WHERE id = ?', user_id).first
-      raise Isucon5::ContentNotFound unless user
-      user
+        user = db.xquery('SELECT id,account_name,nick_name,email FROM users WHERE id = ?', user_id).first
+        raise Isucon5::ContentNotFound unless user
+        user
     end
 
     def user_from_account(account_name)
@@ -249,6 +249,18 @@ ORDER BY created_at DESC
 LIMIT 10
 SQL
     footprints = db.xquery(query, current_user[:id])
+    user_ids = []
+    user_ids << current_user[:id]
+    footprints.each do |footprint|
+      user_ids << footprint[:owner_id]
+    end
+
+    users_info = {}
+
+    db.xquery("SELECT id,account_name,nick_name,email FROM users WHERE id in (?)", user_ids).each do |user_id|
+      tmp = [user_id[:id], user_id[:account_name], user_id[:nick_name], user_id[:email]]
+      users_info.store(user_id[:id],tmp)
+    end
 
     locals = {
       profile: profile || {},
@@ -257,6 +269,7 @@ SQL
       entries_of_friends: entries_of_friends,
       comments_of_friends: comments_of_friends,
       friends: friends,
+      users_info: users_info,
       footprints: footprints
     }
     erb :index, locals: locals
@@ -324,6 +337,7 @@ SQL
     entry[:title], entry[:content] = entry[:body].split(/\n/, 2)
     entry[:is_private] = (entry[:private] == 1)
     owner = get_user(entry[:user_id])
+    binding.pry
     if entry[:is_private] && !permitted?(owner[:id])
       raise Isucon5::PermissionDenied
     end
