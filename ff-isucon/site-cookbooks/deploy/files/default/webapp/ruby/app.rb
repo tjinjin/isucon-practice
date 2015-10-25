@@ -3,10 +3,10 @@ require 'mysql2'
 require 'mysql2-cs-bind'
 require 'tilt/erubis'
 require 'erubis'
-require 'rack-lineprof'
-require 'pry'
-require 'pry-byebug'
-require 'redis'
+#require 'rack-lineprof'
+#require 'pry'
+#require 'pry-byebug'
+#require 'redis'
 
 
 
@@ -24,14 +24,14 @@ end
 
 class Isucon5::WebApp < Sinatra::Base
   use Rack::Session::Cookie
-  use Rack::Lineprof
+  #use Rack::Lineprof
   set :erb, escape_html: true
   set :public_folder, File.expand_path('../../static', __FILE__)
   #set :sessions, true
   set :session_secret, ENV['ISUCON5_SESSION_SECRET'] || 'beermoris'
   set :protection, true
 
-  logger = Logger.new('sinatra.log')
+#  logger = Logger.new('sinatra.log')
 
   helpers do
     def config
@@ -61,9 +61,9 @@ class Isucon5::WebApp < Sinatra::Base
       client
     end
 
-    def redis
-      redis = Redis.new(host: "127.0.0.1", port: "6379")
-    end
+#    def redis
+#      redis = Redis.new(host: "127.0.0.1", port: "6379")
+#    end
 
     def authenticate(email, password)
       query = <<SQL
@@ -130,7 +130,7 @@ SQL
       if user_id != current_user[:id]
         query = 'INSERT INTO footprints (user_id,owner_id) VALUES (?,?)'
         db.xquery(query, user_id, current_user[:id])
-        redis.set(user_id, current_user[:id])
+#        redis.set(user_id, current_user[:id])
       end
     end
 
