@@ -201,12 +201,11 @@ SQL
     end
 # N+1
 # 先に友達リストを取得する
-    logger.info 'friends'
     friends_ids = []
     db.xquery('SELECT another from relations where one = ?', current_user[:id]).each do |friends|
       friends_ids <<  friends[:another]
     end
-    logger.info friends_ids
+
     entries_of_friends = []
     db.xquery('SELECT * FROM entries where user_id in (?) ORDER BY created_at DESC limit 10', friends_ids).each do |entry|
 #      next unless is_friend?(entry[:user_id])
@@ -227,16 +226,17 @@ and (e.private = 0 or e.private = 1 and (e.user_id = ? or e.user_id in (?)))
 ORDER BY c.id DESC LIMIT 10
 SQL
 
-    db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).each do |comment|
+#    db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).each do |comment|
+    comments_of_friends = db.xquery(comments_query,friends_ids,current_user[:id],friends_ids).to_a
 
 
 #    db.xquery('SELECT c.id as id, c.entry_id as entry_id, c.user_id as user_id, c.comment as comment, c.created_at as created_at FROM comments c JOIN entries e ON c.entry_id = e.id WHERE c.user_id IN (?) and (e.private = 0 or e.private)ORDER BY c.created_at DESC LIMIT 10', friends_ids).each do |comment|
 #      entry = db.xquery('SELECT * FROM entries WHERE id = ?', comment[:entry_id]).first
 #      entry[:is_private] = (entry[:private] == 1)
 #      next if entry[:is_private] && !permitted?(entry[:user_id])
-      comments_of_friends << comment
+#      comments_of_friends << comment
 #      break if comments_of_friends.size >= 10
-    end
+#    end
 
     friends_query = 'SELECT one, another, created_at FROM relations WHERE one = ? ORDER BY created_at DESC'
     friends_map = {}
