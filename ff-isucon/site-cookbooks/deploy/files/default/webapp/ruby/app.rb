@@ -337,7 +337,6 @@ SQL
     entry[:title], entry[:content] = entry[:body].split(/\n/, 2)
     entry[:is_private] = (entry[:private] == 1)
     owner = get_user(entry[:user_id])
-    binding.pry
     if entry[:is_private] && !permitted?(owner[:id])
       raise Isucon5::PermissionDenied
     end
