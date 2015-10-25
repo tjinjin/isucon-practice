@@ -181,9 +181,11 @@ SQL
 
     profile = db.xquery('SELECT user_id, first_name, last_name, sex, birthday,pref,updated_at  FROM profiles WHERE user_id = ?', current_user[:id]).first
 
-    entries_query = 'SELECT id, user_id, private, body, created_at FROM entries WHERE user_id = ? ORDER BY created_at LIMIT 5'
+    entries_query = 'SELECT id, user_id, private, substring_index(body, "\n",1) as body, created_at FROM entries WHERE user_id = ? ORDER BY created_at LIMIT 5'
     entries = db.xquery(entries_query, current_user[:id])
-      .map{ |entry| entry[:is_private] = (entry[:private] == 1); entry[:title], entry[:content] = entry[:body].split(/\n/, 2); entry }
+      .map{ |entry| entry[:is_private] = (entry[:private] == 1); entry }
+
+    #binding.pry
 
     comments_for_me_query = <<SQL
 SELECT c.id AS id, c.entry_id AS entry_id, c.user_id AS user_id, c.comment AS comment, c.created_at AS created_at
