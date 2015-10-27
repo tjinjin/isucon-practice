@@ -33,11 +33,13 @@ innodb_flush_method=O_DIRECT
 #table_open_cache_instances = 4
 query_cache_type = 1
 
+#table_open_cache_instances = 2
+
 #innodb_buffer_pool_dump_at_shutdown= 1
 #innodb_buffer_pool_load_at_startup = 1
 
-#max_connections = 200
-#thread_cache_size = 50
+max_connections = 200
+thread_cache_size = 50
 
 #sort_buffer_size = 10M
 #key_buffer = 8M
