@@ -6,6 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-include_recipe "client::public_keys"
+#include_recipe "client::public_keys"
 include_recipe "client::benchmark"
 include_recipe "client::rundeck"
+include_recipe "client::base"

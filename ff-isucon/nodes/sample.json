@@ -1,0 +1,7 @@
+{
+  "run_list": [
+    "recipe[client]",
+    "recipe[refactor]",
+    "recipe[deploy]"
+  ]
+}
