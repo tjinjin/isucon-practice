@@ -1,0 +1,18 @@
+{
+    "name": "client",
+    "description": "client role",
+    "json_class": "Chef::Role",
+
+    "default_attributes": {
+      "client":{
+        "apikey": "xxx",
+        "hostip": "yyy",
+        "webhook": "yyy"
+      }
+    },
+
+    "run_list": [
+        "recipe[common]",
+        "recipe[client]"
+    ]
+}
